@@ -7,7 +7,9 @@
           v-for="link in links"
           :key="link.href">
           <a
-            :href="link.href">
+            :href="link.href"
+            target="_blank"
+            rel="noopener">
             {{ link.text }}
           </a>
         </li>
