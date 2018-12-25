@@ -1,4 +1,4 @@
-# india-photos-index
+# Secret Links
 
 ## Project setup
 ```
