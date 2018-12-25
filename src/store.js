@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import VuexPersistence from 'vuex-persist';
+import axios from 'axios';
 
 const vuexLocal = new VuexPersistence({
   storage: window.localStorage,
@@ -14,6 +15,7 @@ export default new Vuex.Store({
     loading: false,
     title: '',
     links: [],
+    error: false,
   },
   mutations: {
     updatePassword(state, value) {
@@ -28,22 +30,27 @@ export default new Vuex.Store({
     updateLoading(state, value) {
       state.loading = value;
     },
+    updateError(state, value) {
+      state.error = value;
+    },
   },
   actions: {
-    fetchLinks({ commit }) {
+    async fetchLinks({ commit, state }) {
       commit('updateLoading', true);
-      setTimeout(() => {
-        commit('updateLoading', false);
-        commit('updateTitle', 'Test');
-        commit('updateLinks', [
-          { text: 'foo foo foofoo foo: foo foo', href: '#' },
-          { text: 'foo foo foofoo foo: foo foo', href: '#' },
-          { text: 'foo foo foofoo foo: foo foo', href: '#' },
-          { text: 'foo foo foofoo foo: foo foo', href: '#' },
-          { text: 'foo foo foofoo foo: foo foo', href: '#' },
-          { text: 'foo foo foofoo foo: foo foo', href: '#' },
-        ]);
-      }, 1000);
+      commit('updateError', false);
+      try {
+        const { data: { title, links } } = await axios.post('/.netlify/functions/links', {}, {
+          auth: {
+            password: state.password,
+          },
+        });
+        commit('updateTitle', title);
+        commit('updateLinks', links);
+      } catch (e) {
+        commit('updateError', true);
+      }
+
+      commit('updateLoading', false);
     },
   },
   plugins: [

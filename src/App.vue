@@ -4,7 +4,7 @@
       :is-full-page="true"
       :active.sync="loading" />
     <links
-      v-if="links"
+      v-if="links && links.length"
       :title="title"
       :links="links" />
   </div>
