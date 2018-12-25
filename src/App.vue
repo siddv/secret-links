@@ -1,28 +1,46 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <BLoading
+      :is-full-page="true"
+      :active.sync="loading" />
+    <links
+      v-if="links"
+      :links="links" />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue';
+import { mapState } from 'vuex';
+import Links from './components/Links.vue';
 
 export default {
   name: 'app',
   components: {
-    HelloWorld,
+    Links,
+  },
+  computed: mapState({
+    links: state => state.links,
+    loading: state => state.loading,
+  }),
+  methods: {
+    openPasswordPrompt() {
+      this.$dialog.prompt({
+        message: 'Please enter the password',
+        inputAttrs: {
+          maxlength: 30,
+        },
+        onConfirm: this.onSubmit,
+      });
+    },
+    onSubmit(password) {
+      this.$store.commit('updatePassword', password);
+      this.$store.dispatch('fetchLinks');
+    },
+  },
+  mounted() {
+    if (!this.links.length) {
+      this.openPasswordPrompt();
+    }
   },
 };
 </script>
-
-<style lang="scss">
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>

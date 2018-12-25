@@ -1,0 +1,31 @@
+<template>
+  <section class="section">
+    <section class="container content">
+      <h1>Links</h1>
+      <ul>
+        <li
+          v-for="link in links"
+          :key="link.href">
+          <a
+            :href="link.href">
+            {{ link.text }}
+          </a>
+        </li>
+      </ul>
+    </section>
+  </section>
+</template>
+
+<script>
+export default {
+  props: {
+    links: Array,
+  },
+};
+</script>
+
+<style lang="scss" scoped>
+  li {
+    padding-bottom: 1em;
+  }
+</style>
