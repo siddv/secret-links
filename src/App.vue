@@ -23,7 +23,15 @@ export default {
     title: state => state.title,
     links: state => state.links,
     loading: state => state.loading,
+    error: state => state.error,
   }),
+  watch: {
+    error(newErrorState, oldErrorState) {
+      if (newErrorState === true && oldErrorState === false) {
+        this.openErrorPrompt();
+      }
+    },
+  },
   methods: {
     openPasswordPrompt() {
       this.$dialog.prompt({
@@ -37,6 +45,14 @@ export default {
     onSubmit(password) {
       this.$store.commit('updatePassword', password);
       this.$store.dispatch('fetchLinks');
+    },
+    openErrorPrompt() {
+      this.$dialog.alert({
+        title: 'Oh no',
+        message: 'You got the wrong password.',
+        type: 'is-danger',
+        onConfirm: this.openPasswordPrompt,
+      });
     },
   },
   mounted() {
