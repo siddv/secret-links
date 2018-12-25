@@ -5,6 +5,7 @@
       :active.sync="loading" />
     <links
       v-if="links"
+      :title="title"
       :links="links" />
   </div>
 </template>
@@ -19,6 +20,7 @@ export default {
     Links,
   },
   computed: mapState({
+    title: state => state.title,
     links: state => state.links,
     loading: state => state.loading,
   }),

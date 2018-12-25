@@ -1,7 +1,7 @@
 <template>
   <section class="section">
     <section class="container content">
-      <h1>Links</h1>
+      <h1>{{title || 'Secret Links'}}</h1>
       <ul>
         <li
           v-for="link in links"
@@ -19,6 +19,7 @@
 <script>
 export default {
   props: {
+    title: String,
     links: Array,
   },
 };

@@ -12,11 +12,15 @@ export default new Vuex.Store({
   state: {
     password: '',
     loading: false,
+    title: '',
     links: [],
   },
   mutations: {
     updatePassword(state, value) {
       state.password = value;
+    },
+    updateTitle(state, value) {
+      state.title = value;
     },
     updateLinks(state, value) {
       state.links = value;
@@ -30,6 +34,7 @@ export default new Vuex.Store({
       commit('updateLoading', true);
       setTimeout(() => {
         commit('updateLoading', false);
+        commit('updateTitle', 'Test');
         commit('updateLinks', [
           { text: 'foo foo foofoo foo: foo foo', href: '#' },
           { text: 'foo foo foofoo foo: foo foo', href: '#' },
